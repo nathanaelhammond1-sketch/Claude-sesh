@@ -37,5 +37,6 @@ export default defineConfig({
   },
   plugins: [react(), serviceWorker()],
   build: { target: 'es2020', sourcemap: false },
+  esbuild: { charset: 'ascii' },
   test: { environment: 'node', include: ['src/**/*.test.ts'] },
 } as never);
