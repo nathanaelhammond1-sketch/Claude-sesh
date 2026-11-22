@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>DAYMARK</title>
+    <meta name="description" content="DAYMARK — Make every day count. Daily intentions, honest evening reviews and automatic carry-forward of unfinished work." />
+    <meta name="theme-color" content="#f6f1e7" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="DAYMARK" />
+    <meta name="format-detection" content="telephone=no" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icons/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <style>
+      /* Pre-paint background so the app never flashes white. */
+      html { background: #f6f1e7; }
+      @media (prefers-color-scheme: dark) { html { background: #0b1426; } }
+    </style>
+  </head>
+  <body>
+    <noscript>DAYMARK needs JavaScript to run.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
