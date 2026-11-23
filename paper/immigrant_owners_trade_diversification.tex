@@ -1,0 +1,1462 @@
+%=====================================================================
+%  Immigrant Owners and Trade Diversification
+%  Draft paper: introduction, data, model, empirical strategy;
+%  results, mechanisms, discussion and conclusion are outlined.
+%  Compile: pdflatex (twice). Bibliography is embedded.
+%=====================================================================
+\documentclass[12pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathpazo}
+\usepackage[margin=1in]{geometry}
+\usepackage{setspace}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs,tabularx,array,multirow}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{enumitem}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[authoryear,round]{natbib}
+\usepackage[colorlinks=true,linkcolor=MidnightBlue,citecolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
+
+\onehalfspacing
+\setlength{\parskip}{0.35em}
+\captionsetup{font=small,labelfont=bf}
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% ---------- Theorem environments ----------
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{assumption}{Assumption}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+% ---------- Drafting macros ----------
+% \result{...}  : placeholder for a finding to be filled in
+% \verify{...}  : institutional/data detail to confirm before circulating
+% \planned{...} : outline text for sections not yet written
+\newcommand{\result}[1]{\textcolor{RoyalBlue}{[\textbf{Result:} #1]}}
+\newcommand{\verify}[1]{\textcolor{BrickRed}{[\textbf{Verify:} #1]}}
+\newcommand{\planned}[1]{\textcolor{OliveGreen}{#1}}
+\newcommand{\figshell}[2]{%
+  \begin{figure}[htbp]\centering
+  \fbox{\begin{minipage}[c][1.9in][c]{0.85\textwidth}\centering
+  \planned{\textit{Figure to be produced.}}\\[0.4em]
+  \small\planned{#2}\end{minipage}}
+  \caption{#1}\end{figure}}
+
+% ---------- Notation ----------
+\newcommand{\Post}{\mathrm{Post}}
+\newcommand{\one}{\mathbf{1}}
+\newcommand{\E}{\mathbb{E}}
+
+\title{\textbf{Immigrant Owners and Trade Diversification}\thanks{%
+Preliminary and incomplete; results to be added. Statistics Canada
+disclosure statement and acknowledgements to be added.}}
+\author{Nathanael [Surname]\\[0.2em]\normalsize [Department, University]}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+Canada has long sought to diversify its international trade, but the
+decisions that determine which countries and products a country trades are
+made by firms. This paper asks whether the identity of a firm's owner is one
+of those determinants. Using Canadian customs records linked to owner records,
+I follow roughly 1,000 incumbent firms whose ownership passes from
+non-immigrant to immigrant owners between 2005 and 2019, and compare each
+firm's trade with its new owner's country of origin to its trade with other
+countries, before and after the change. Because the business is held fixed
+while the person in control changes, the design separates knowledge that moves
+with the owner from the sorting of immigrants into firms already positioned to
+trade with their origin countries. A model of trade-relationship choice
+distinguishes three channels---lower fixed costs of forming relationships,
+lower variable costs of running them, and a shift in demand toward
+home-country goods---by their implications for the extensive and intensive
+margins, for imports and exports, and for consumer and intermediate goods.
+\result{Headline effect on trade with the origin country; the margin through
+which it operates; whether it diversifies the firm's trade or reallocates it
+from other partners.}
+
+\medskip\noindent
+\textbf{Keywords:} immigration; ownership; firm-level trade; trade
+diversification; information frictions\\
+\textbf{JEL:} F14, F22, L25, D83
+\end{abstract}
+
+\thispagestyle{empty}
+\newpage
+\setcounter{page}{1}
+
+%=====================================================================
+\section{Introduction}
+\label{sec:intro}
+%=====================================================================
+
+Few objectives have proved as durable in Canadian trade policy as
+diversification. Roughly three-quarters of Canada's merchandise exports go to
+a single partner, the United States, and successive federal strategies have
+aimed to expand trade with the rest of the world---an objective that has
+acquired new urgency since the escalation of U.S. tariffs in 2025.%
+\footnote{\verify{Exact U.S. share of Canadian merchandise exports for the
+sample period and a citation for the federal Export Diversification Strategy
+(2018) and subsequent commitments.}}
+Yet countries do not choose their trading partners; firms do. A nation's trade
+portfolio is the sum of many firm-level decisions about which foreign
+suppliers to buy from, which foreign customers to sell to, and in which
+products. Understanding what moves a firm into a new market is therefore a
+prerequisite for understanding how national trade patterns change.
+
+Entering a foreign market requires knowledge that is costly to acquire: who
+the reliable suppliers and buyers are, how business is conducted, how
+contracts are written and enforced, and how to navigate an unfamiliar
+language and set of institutions. Much of this knowledge is held by people
+rather than by organizations. Immigrants are a natural source of it. In 2021,
+23 percent of Canada's population was born abroad, and a large literature
+shows that countries trade more with the places their immigrants come from
+\citep{gould1994,headries1998,rauchtrindade2002}. Recent firm-level work
+locates part of this pattern inside businesses: Canadian firms with immigrant
+owners import more from, and export more to, their owners' countries of
+origin \citep{fung2019,fungliu2025}, and U.S. firms founded by immigrants
+source disproportionately from their founders' birth countries, where they pay
+lower prices \citep{chikissaygin2026}.
+
+These correlations admit two readings with very different implications. On
+the first, owners carry knowledge that lowers their firm's cost of trading
+with their country of origin; who owns a firm then shapes what it trades, and
+the owners a country's businesses attract become a lever on its trade
+portfolio. On the second, immigrants found or acquire firms that are already
+well placed to trade with their origin countries---because of the products
+the firm makes, the customers it serves, or the networks it already
+uses---and ownership merely labels firms that would have traded with those
+countries anyway. Cross-sectional comparisons cannot separate the two. And
+even under the first reading, it matters \emph{which} cost the owner lowers.
+If the owner makes it cheaper to start new relationships, the firm diversifies
+into new partners and products. If the owner instead makes existing
+relationships cheaper to run, trade deepens along lines the firm had already
+established. If the owner chiefly shifts demand toward home-country goods,
+imports are reoriented without any change in the cost of trading.
+
+This paper asks whether a change in ownership from a non-immigrant to an
+immigrant owner changes an incumbent firm's international trade, and through
+which of these channels. I study roughly 1,000 Canadian firms whose ownership
+passes from non-immigrant to immigrant owners between 2005 and 2019. I link
+Statistics Canada's firm-level customs records---imports by six-digit
+Harmonized System (HS6) product and source country since 2001, exports by
+product and destination since 2005---to owner records that identify immigrant
+owners and their countries of origin. The key feature of the setting is that
+the firm, its products, its location, and its existing relationships are held
+fixed while the person in control changes. Any change in where the firm trades
+that coincides with the arrival of an owner from country $o$, and that is
+specific to country $o$, is difficult to attribute to the business rather
+than to the person.
+
+The empirical design compares, within the same firm and year, the change in
+trade with the new owner's country of origin to the change in trade with all
+other countries, relative to the same comparison in firms that did not change
+hands or were acquired by owners from other origins. Firm-by-year fixed
+effects absorb everything that changes when a firm is sold---new management,
+new financing, reorganization, changes in scale---provided it does not
+differentially favour country $o$. Country-by-product-by-year fixed effects
+absorb shocks to Canada's trade with $o$ in the firm's products, including
+tariff changes under trade agreements signed during the period and exchange
+rate movements. Firm-by-country-by-product fixed effects absorb persistent
+differences in a firm's fit with particular partners, including any selection
+of buyers on the \emph{level} of a firm's opportunities with their origin
+country. The remaining threat is that buyers select firms in anticipation of
+firm- and country-specific shocks that would have occurred without them. I
+assess it with event-study leads, comparisons among firms acquired by owners
+from different origins, comparisons with transfers between non-immigrant
+owners, placebo origin countries, and the timing of sales initiated by
+sellers.
+
+To interpret the estimates, I develop a simple partial-equilibrium model in
+which a firm chooses which country--product trade relationships to form, in
+each direction, and how much to trade through each. Forming a relationship
+requires a fixed cost at the product level and, the first time the firm trades
+with a country, a fixed cost at the country level; trading through it incurs a
+variable cost. Each friction has a component that every Canadian firm faces
+and an information component that an owner from the partner country can
+partly remove. A parallel channel allows the owner to raise demand for
+home-country consumer goods. The model maps the three channels into distinct
+predictions: a fixed-cost channel generates entry into new country--product
+pairs, in bundles when the country-level cost falls, and leaves incumbent
+flows unchanged; a variable-cost channel raises incumbent flows in proportion;
+and a demand channel affects only imports of consumer goods, leaving exports
+and imported intermediate inputs untouched. My leading hypothesis is the
+fixed-cost channel. Information about \emph{whom} to trade with is acquired
+once, at the start of a relationship; search frictions in international goods
+markets are large \citep{lenoir2023,startz2025}; and the U.S. evidence that
+immigrant founders reach different, lower-priced suppliers rather than
+better terms from the same suppliers \citep{chikissaygin2026} points to an
+advantage in finding partners. The design and the model, however, treat the
+three channels symmetrically, and the data decide among them.
+
+The model delivers two further results that shape the empirical analysis.
+First, when sourcing decisions are interdependent, as in
+\citet{antras2017}, an owner's advantage in one country changes the firm's
+scale and therefore its trade with every other country. Under the
+interdependence structure of that model, these spillovers are common across
+the firm's other partners, so the within-firm comparison continues to
+identify the country-specific effect, while trade with third countries
+requires a separate comparison across firms. Second, the model clarifies what
+firm-level diversification means: an expansion of trade with the owner's
+origin raises the number of the firm's partners and relationships, but lowers
+the concentration of its trade across partners only when the origin country's
+initial share is below the firm's Herfindahl index. Because most Canadian
+traders are heavily concentrated on the United States, the condition is
+likely to hold for most firms and origins; whether it does, and whether the
+new trade is created or diverted from other partners, is an empirical
+question that links the firm-level estimates to national diversification.
+
+\result{Paragraph 1 of findings: event-study evidence on trade with the
+origin country for imports and exports; size of the pooled effect; absence
+or presence of pre-trends.}
+
+\result{Paragraph 2 of findings: decomposition into country entry, new
+country--product pairs, and incumbent flows; which channel the evidence
+favours; results for firms already trading with the origin country before the
+switch; consumer versus intermediate goods and imports versus exports.}
+
+\result{Paragraph 3 of findings: firm-level diversification (number of
+partners, concentration, non-U.S. share); creation versus diversion with
+respect to third countries; robustness and placebo tests.}
+
+This paper contributes to three literatures. The first studies how migrant
+networks shape trade. Since \citet{gould1994} and \citet{headries1998}, who
+used Canadian data, a large body of work has related bilateral trade to
+immigrant stocks across countries and regions
+\citep{wagner2002,rauchtrindade2002,combes2005,peri2010}, and quasi-experimental
+studies using refugee settlement and other plausibly exogenous variation in
+migrant populations have confirmed a causal link
+\citep{cohen2017,parsonsvezina2018,steingress2018,bonadio2026}. Because these
+studies measure trade and migration at the level of countries or regions, they
+cannot say which firms carry the trade, through which decisions, or which
+friction migrants relax---whether information costs or preferences, a
+distinction emphasized since \citet{rauch2001}. I move the analysis inside the
+firm and use a change in the person who controls it, rather than a change in
+the local population, to identify the effect.
+
+The second literature studies immigrants inside firms. A series of papers
+shows that firms employing immigrants trade more with immigrants' origin
+countries
+\citep{hiller2013,hatzigeorgiou2016,andrews2017,mitaritonna2017,ottaviano2018,egger2019,ariu2022,erbahar2023},
+including Canadian evidence on exports \citep{cardoso2022}. Closest to this
+paper, \citet{fung2019} and \citet{fungliu2025} document that Canadian firms
+with immigrant owners trade more with their owners' origins, and
+\citet{chikissaygin2026} show that U.S. firms founded by immigrants source
+from their founders' birth countries at lower prices and quantify the value of
+that advantage in a model of supplier search and entrepreneurship. These
+papers compare firms with and without immigrant owners or founders. A central
+assumption of the quantitative work---that the trade advantage is embodied in
+the person, so that it would disappear if the founder faced native costs---is
+not tested by cross-sectional variation, because the founder and the business
+she designs are observed together. Holding the business fixed while the owner
+changes provides a direct test of portability, and it does so for incumbent
+firms, the population that accounts for most trade but that founder-based
+designs observe least. The paper also relates to work showing that
+individuals carry market-specific knowledge across firms: managers moving
+between firms \citep{mionopromolla2014}, sales managers transmitting
+foreign customer capital \citep{patault2024}, employee spinoffs entering their
+parents' export markets \citep{muendler2018}, and firms learning to import from
+peers \citep{bisztray2018}. More broadly, it relates to evidence that the
+identity of those who control a firm affects its decisions and performance
+\citep{bertrandschoar2003,bennedsen2007,becker2022}, and that changes in
+ownership change firm behaviour \citep{guadalupe2012}. Here the organizational
+event is a change in ownership and the outcome is the geography of trade.
+
+The third literature studies the margins of firm-level trade and the frictions
+behind them. Fixed and sunk costs of market entry shape which firms trade
+and where \citep{melitz2003,chaney2008,das2007,eaton2011}, firms expand
+sequentially across products and markets
+\citep{bernard2007,bernard2011,albornoz2012,morales2019}, and sourcing decisions
+are interdependent across countries \citep{antras2017}. A growing literature
+attributes part of these costs to information and search frictions
+\citep{allen2014,chaney2014,steinwender2018,lenoir2023,startz2025} and shows
+that trade relationships, once formed, are valuable and persistent
+\citep{monarch2023}. Distinguishing fixed from variable trade costs is
+difficult because both are typically inferred from the same flows. An owner's
+country of origin provides an observed, person-specific, and country-specific
+shifter of bilateral frictions within a firm, and the timing of ownership
+changes allows me to trace how a firm's relationship portfolio responds. By
+linking these firm-level responses to concentration and partner composition,
+the paper also connects to work on the diversification of national trade
+\citep{imbs2003,koren2007,caselli2020}.
+
+The remainder of the paper proceeds as follows. Section~\ref{sec:data}
+describes the setting and data. Section~\ref{sec:model} presents the model and
+its predictions. Section~\ref{sec:strategy} describes the empirical strategy.
+Sections~\ref{sec:results} and~\ref{sec:mechanisms} present the main results
+and the mechanism tests. Section~\ref{sec:discussion} discusses
+interpretation, aggregation, and policy, and Section~\ref{sec:conclusion}
+concludes.
+
+%=====================================================================
+\section{Setting and Data}
+\label{sec:data}
+%=====================================================================
+
+\subsection{Setting}
+
+Canada is a useful setting for three reasons. First, immigrants are a large
+share of the population and of business owners, and they come from a wide
+range of origin countries, which generates variation in the origin of
+incoming owners across firms. \verify{Share of private enterprises with
+immigrant majority ownership; citation to Statistics Canada.} Second, the
+country's trade is highly concentrated on one partner, so that firm-level
+moves into other markets are directly relevant to policy. Third, a large
+number of privately held businesses change hands each year, many as owners
+retire, which creates the ownership transitions the design requires.
+\verify{Citation on business succession and retirement-driven sales.}
+
+During the sample period Canada implemented several trade agreements that
+changed tariffs with particular partners, including the Canada--Korea Free
+Trade Agreement (2015), the provisional application of the Comprehensive
+Economic and Trade Agreement with the European Union (2017), and the
+Comprehensive and Progressive Agreement for Trans-Pacific Partnership (2018).
+Such changes affect all Canadian firms trading a given product with a given
+country and are absorbed by country-by-product-by-year fixed effects in the
+main specification.
+
+\subsection{Trade data}
+
+The trade data are Statistics Canada's Trade by Importer Characteristics (TIC)
+and Trade by Exporter Characteristics (TEC) microdata, which link customs
+transactions to business identifiers. Imports are observed from 2001 to 2019
+by HS6 product and country of origin; exports are observed from 2005 to 2019
+by HS8 product and country of destination. I aggregate both to the
+firm--country--HS6--year level, harmonizing export codes to HS6 and concording
+HS revisions (2002, 2007, 2012, 2017) to a time-consistent classification. The
+data record the value of trade in each cell; physical quantities are not used.
+\verify{Whether imports are recorded by country of origin or country of
+shipment; whether domestic exports and re-exports can be separated; reporting
+thresholds; treatment of low-value and courier shipments.}
+
+The main analysis uses 2005--2019 for both directions so that imports and
+exports cover the same window. Imports for 2001--2004 extend the pre-period
+for early switchers and are used in robustness checks. Ending in 2019 avoids
+the disruption to trade during the COVID-19 pandemic. Values are deflated to
+constant dollars. \verify{Deflator.}
+
+\subsection{Ownership and immigrant status}
+
+Ownership information comes from owner-linked business records, following the
+construction in \citet{fung2019}. \verify{Source of ownership records (e.g.,
+shareholder schedules for incorporated firms and individual tax records for
+unincorporated businesses), threshold for recording an owner, and linkage to
+immigrant landing records.} An owner is classified as an immigrant if she
+appears in the immigrant landing records, and her country of origin is
+\verify{country of birth / citizenship / last permanent residence}. A firm is
+classified as immigrant-owned in a year if \verify{immigrant owners together
+hold a majority of the firm's shares; alternatively, if the largest
+shareholder is an immigrant}.
+
+Two measurement issues matter for the design. First, immigrants who landed
+before the start of the landing records are classified as non-immigrants.
+\verify{Start year of landing-record coverage (believed to be 1980).} A firm
+sold by an early-cohort immigrant to a recent immigrant from the same country
+would then appear as a non-immigrant-to-immigrant transition. I therefore
+describe the baseline group as non-immigrant ``as measured'' and test
+sensitivity to excluding sellers old enough to have landed before coverage
+began. Second, firms with several owners may have owners from more than one
+origin. The baseline assigns the origin of the owner or owners holding the
+largest combined share; firms whose incoming owners come from several origins
+are analysed separately.
+
+\subsection{Firm continuity and the event definition}
+
+A change in ownership must be distinguished from administrative events that
+mechanically alter reported trade. I require that the firm's business
+identifier persist across the transition and exclude transitions that coincide
+with mergers, amalgamations, consolidations of reporting units, or changes in
+the identifier under which customs declarations are filed. \verify{Available
+indicators of mergers and identifier changes.}
+
+The event is the first year $t_i^*$ in which firm $i$ moves from non-immigrant
+to immigrant ownership. The incoming owner's origin $o_i$ is fixed throughout
+the event window, including the pre-period. The main sample retains firms that
+traded in at least one direction in the pre-period and that are observed in
+the business register for at least \verify{two} years before the transition.
+Firms are \emph{not} required to survive or to trade after the transition:
+conditioning on post-transition outcomes would select on a possible effect of
+treatment. Firms that exit after the transition contribute zeros where
+business-register coverage indicates they are no longer operating, and are
+otherwise treated as missing. Repeated transitions and reversals are flagged;
+in the baseline, firms are followed until a second change of ownership.
+
+Table~\ref{tab:switches} will report the distribution of qualifying
+transitions by year, origin region, industry, and pre-period trading status.
+The sample contains roughly 1,000 qualifying transitions. \verify{Exact count
+after all restrictions; disclosure rounding.}
+
+\begin{table}[htbp]\centering\small
+\caption{Qualifying ownership transitions (shell)}
+\label{tab:switches}
+\begin{tabular}{lccc}
+\toprule
+ & Transitions & Share importing before & Share exporting before\\
+\midrule
+\multicolumn{4}{l}{\textit{Panel A. By origin region of incoming owner}}\\
+\quad East Asia & -- & -- & -- \\
+\quad South Asia & -- & -- & -- \\
+\quad Europe & -- & -- & -- \\
+\quad Middle East and Africa & -- & -- & -- \\
+\quad Americas (excl.\ U.S.) & -- & -- & -- \\
+\quad United States & -- & -- & -- \\
+\multicolumn{4}{l}{\textit{Panel B. By sector}}\\
+\quad Manufacturing & -- & -- & -- \\
+\quad Wholesale trade & -- & -- & -- \\
+\quad Retail trade & -- & -- & -- \\
+\quad Other & -- & -- & -- \\
+\midrule
+Total & $\approx$1,000 & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Comparison groups}
+
+Three groups of firms serve as comparisons: (i) firms that remain under
+non-immigrant ownership throughout the window; (ii) firms that pass from one
+non-immigrant owner to another, which share the disruption of a sale but not
+the arrival of an immigrant owner; and (iii) firms that pass to immigrant
+owners from a different origin, which share the arrival of an immigrant owner
+but not the specific origin. Comparisons within groups (ii) and (iii) are the
+most demanding, because they hold fixed the selection of firms into being sold
+and, in (iii), the selection of firms into immigrant ownership.
+
+\subsection{Outcomes and the panel}
+
+For each direction $d \in \{\text{import}, \text{export}\}$, I construct a
+panel at the firm--country--product--year level that retains zeros for
+relationships the firm could plausibly have traded. Because the full set of
+firm--country--product cells is very large, the set of potential relationships
+for firm $i$ is defined from pre-period information only: all HS6 products the
+firm traded with any country in the pre-period, together with the products
+most commonly traded by firms in its six-digit industry, crossed with all
+partner countries. Absence from the customs records is coded as zero only
+where business-register coverage indicates that the firm was operating.
+
+The outcomes are:
+\begin{itemize}[leftmargin=1.5em,itemsep=0.1em]
+\item \emph{Bilateral value}: trade with country $c$ in product $k$, $X_{ickdt}$,
+and its sum over products, $X_{icdt}$.
+\item \emph{Country participation}: $\one[X_{icdt}>0]$.
+\item \emph{Product breadth}: the number of products traded with country $c$.
+\item \emph{New and incumbent relationships}: trade in country--product pairs
+not active in the pre-period, and trade in pairs active in the year before the
+transition (with zeros retained after the transition).
+\item \emph{Firm-level diversification}: the number of partner countries and of
+country--product relationships; the Herfindahl index of trade across partner
+countries, $H_{idt} = \sum_c s_{icdt}^2$; and the non-U.S.\ share of trade.
+\item \emph{Totals}: total imports and exports, and trade with countries other
+than the owner's origin.
+\end{itemize}
+
+Products are classified as consumer, intermediate, or capital goods using the
+UN Broad Economic Categories, and as differentiated, reference-priced, or
+homogeneous using \citet{rauch1999}. Country characteristics---distance,
+common official language with Canada, institutional quality
+\citep{kaufmann2011}, and the size of Canada's aggregate trade with the
+country---are used to measure the information content of bilateral frictions.
+
+\subsection{Descriptive statistics}
+
+\begin{table}[htbp]\centering\footnotesize
+\caption{Pre-period characteristics of switching and comparison firms (shell)}
+\label{tab:sumstats}
+\begin{tabular}{lcccc}
+\toprule
+ & Treated & Sold to & Never & Sold to imm.\\
+ & & non-imm. & sold & (other origin)\\
+\midrule
+Employment & -- & -- & -- & -- \\
+Importer (share) & -- & -- & -- & -- \\
+Exporter (share) & -- & -- & -- & -- \\
+Import partner countries & -- & -- & -- & -- \\
+Export partner countries & -- & -- & -- & -- \\
+HS6 products imported & -- & -- & -- & -- \\
+HS6 products exported & -- & -- & -- & -- \\
+Trades with $o$ (share) & -- & \multicolumn{3}{c}{-- (pseudo-origin)} \\
+Share of trade with $o$ & -- & \multicolumn{3}{c}{-- (pseudo-origin)} \\
+HHI across partners & -- & -- & -- & -- \\
+Non-U.S.\ share of trade & -- & -- & -- & -- \\
+\midrule
+Firms & $\approx$1,000 & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\planned{Planned descriptive facts: (i) the cross-sectional origin gradient
+among all firms, replicating \citet{fungliu2025} for both directions and
+splitting it by margin; (ii) how switching firms compare with other firms
+before the transition; (iii) how often switching firms already trade with the
+incoming owner's origin before the transition.}
+
+%=====================================================================
+\section{A Model of Trade Relationships and Owner Knowledge}
+\label{sec:model}
+%=====================================================================
+
+The model is deliberately simple. Its purpose is to state which cost an owner
+could change, and what each possibility implies for each margin of trade,
+rather than to provide a new general theory of firm-level trade. It takes the
+firm's operations in its industry as given and models its choice of trade
+relationships.
+
+\subsection{Environment}
+
+Firm $i$ has an owner with origin $o_i$; for a non-immigrant owner,
+$o_i=\varnothing$. A trade \emph{relationship} is a triple $(c,k,d)$: a
+partner country $c$, an HS6 product $k$, and a direction
+$d\in\{\text{im},\text{ex}\}$. An active relationship earns variable profit
+and pays a fixed cost:
+\begin{equation}
+\pi_{ickd} = \Phi_{ickd}\,\tau_{icd}^{-\varepsilon_d} - f_{ickd}.
+\label{eq:pi}
+\end{equation}
+$\Phi_{ickd}$ collects the firm's scale and productivity, supply or demand
+conditions for product $k$ in country $c$, and prices. $\tau_{icd}\geq1$ is the
+firm's variable cost of trading with $c$---transport, contracting, monitoring,
+and enforcement. $f_{ickd}$ is the fixed cost of operating the
+relationship---finding a partner, learning product-specific procedures,
+writing a first contract. $\varepsilon_d>0$ is the elasticity of variable profit
+with respect to the variable cost. In addition, the firm pays a country-level
+fixed cost $F_{icd}$ in any period in which it has at least one active
+relationship with $c$ in direction $d$. It covers learning the country's
+institutions, language, payment practices, and customs procedures.
+
+The firm chooses, for each direction, the set of active countries
+$\mathcal{C}_{id}$ and, for each active country, the set of active products
+$\mathcal{K}_{icd}$, to maximize
+\begin{equation}
+\Pi_i = \sum_{d}\sum_{c\in\mathcal{C}_{id}}\Big[\sum_{k\in\mathcal{K}_{icd}}
+\pi_{ickd} - F_{icd}\Big].
+\label{eq:Pi}
+\end{equation}
+
+\begin{assumption}[Separability and trade values]\label{ass:sep}
+(i) Relationships are separable: $\Phi_{ickd}$ does not depend on the firm's
+other relationships. (ii) The value of trade through an active relationship is
+proportional to its variable profit, $X_{ickd}=\mu_d\,\Phi_{ickd}\,
+\tau_{icd}^{-\varepsilon_d}$, with $\mu_d>0$ common across firms, countries,
+and products.
+\end{assumption}
+
+Part (ii) holds in each of the sectors the data cover. For an exporter facing
+constant-elasticity demand abroad, revenue is proportional to variable
+profit, with $\varepsilon=\sigma-1$. For a wholesaler or retailer importing
+goods for resale under constant-elasticity demand at home, the value of
+purchases is proportional to the variable profit from reselling them. For a
+manufacturer importing inputs, input spending is proportional to the
+variable profit the input generates when sourcing decisions are separable;
+Section~\ref{sec:interdep} relaxes separability for this case. The firm's
+type therefore affects only $\Phi$ and $\varepsilon$, not the mechanism.
+
+\begin{lemma}[Optimal relationship set]\label{lem:set}
+Under Assumption~\ref{ass:sep}(i), conditional on country $c$ being active in
+direction $d$, product $k$ is active if and only if
+$\Phi_{ickd}\tau_{icd}^{-\varepsilon_d}\geq f_{ickd}$. Country $c$ is active
+if and only if
+\begin{equation}
+\Omega_{icd}\equiv\sum_{k}\max\{\Phi_{ickd}\tau_{icd}^{-\varepsilon_d}-f_{ickd},\,0\}
+\;\geq\;F_{icd}.
+\label{eq:Omega}
+\end{equation}
+\end{lemma}
+
+\noindent The proof is immediate from \eqref{eq:Pi}: the problem separates
+across directions and countries, and within a country across products.
+
+\subsection{What an immigrant owner changes}
+
+Let $D_{ic}=\one[c=o_i]$. Each friction has a component every Canadian firm
+faces and an \emph{information component} that an owner from the partner
+country can partly remove. An owner from $o$ removes a share of the
+information component for her country of origin only:
+\begin{align}
+\ln\tau_{icd} &= \ln\bar\tau_{cd} + (1-\lambda_\tau D_{ic})\,\iota_{c},
+\label{eq:tau}\\
+F_{icd} &= \bar F_{cd} + (1-\lambda_F D_{ic})\,\psi_{c},
+\label{eq:F}\\
+f_{ickd} &= \bar f_{ckd} + (1-\lambda_f D_{ic})\,\psi_{ck},
+\label{eq:f}
+\end{align}
+with $\lambda_\tau,\lambda_F,\lambda_f\in[0,1]$ and information components
+$\iota_c,\psi_c,\psi_{ck}\geq0$.
+
+\begin{assumption}[Information components]\label{ass:info}
+The information components $\iota_c$, $\psi_c$, and $\psi_{ck}$ are larger where
+public information about trading with $c$ is scarce: for differentiated
+goods, for countries with weaker institutions or greater linguistic and
+institutional distance from Canada, and for countries with which Canada's
+aggregate trade is thin.
+\end{assumption}
+
+Assumption~\ref{ass:info} is the source of testable heterogeneity. If the owner
+instead lowered $\tau$ by a constant proportion everywhere, the proportional
+effect would be the same for every country and product, and there would be no
+cross-sectional pattern to test.
+
+\paragraph{Demand channel.} For imports, the owner may also shift demand
+toward home-country goods, for example by serving co-ethnic customers:
+\begin{equation}
+\Phi_{ick,\text{im}} = \bar\Phi_{ick,\text{im}}\,\big(1+\eta\,D_{ic}\,\one[k\in\mathcal{K}^{\text{cons}}]\big),
+\label{eq:demand}
+\end{equation}
+where $\mathcal{K}^{\text{cons}}$ is the set of consumer goods and $\eta\geq0$.
+
+\begin{assumption}[Scope of the demand channel]\label{ass:demand}
+The demand channel affects imports of consumer goods only. It does not affect
+exports to $o$ or imports of intermediate and capital goods.
+\end{assumption}
+
+Assumption~\ref{ass:demand} is what makes the demand channel testable, and it
+is also its weakest point. Two departures are plausible: firms that sell
+food or other inputs to co-ethnic businesses may import intermediate goods
+for that demand, and an owner may prefer home-country suppliers for reasons of
+trust rather than cost. Both would load onto the cost channels in the tests
+below. I return to these possibilities in Section~\ref{sec:mechanisms}.
+
+\subsection{The effect of a change in ownership}
+
+Consider firm $i$ whose owner changes at $t^*$ from a non-immigrant to an
+owner from $o$, holding all primitives other than $D_{io}$ fixed. Write
+$\Delta$ for the change across the transition. The following results describe
+each channel in isolation; when several operate, their effects combine.
+
+\begin{proposition}[Bilateral effect]\label{prop:bilateral}
+Under Assumption~\ref{ass:sep}, trade with $o$ weakly increases under each
+channel, and trade with every $c\neq o$ is unchanged. The within-firm change in
+trade with $o$ relative to other countries therefore equals the change in
+trade with $o$.
+\end{proposition}
+
+\begin{proposition}[Margins]\label{prop:margins}
+Under Assumption~\ref{ass:sep}:
+\begin{enumerate}[label=(\alph*),itemsep=0.1em]
+\item \emph{Variable cost} ($\lambda_\tau>0$ only). Every incumbent relationship
+with $o$ grows by the same proportion,
+$\Delta\ln X_{iokd}=\varepsilon_d\lambda_\tau\iota_o$. New relationships enter
+only if they were within that proportion of the activation threshold.
+\item \emph{Product fixed cost} ($\lambda_f>0$ only). Incumbent relationships are
+unchanged. Trade with $o$ grows only through new pairs $(o,k)$ with
+$\bar f_{okd}+(1-\lambda_f)\psi_{ok}\leq\Phi_{iokd}\tau_{iod}^{-\varepsilon_d}
+<\bar f_{okd}+\psi_{ok}$, provided $o$ is or becomes active.
+\item \emph{Country fixed cost} ($\lambda_F>0$ only). Firms already active with
+$o$ before the transition are unaffected. A firm not previously active with $o$
+enters if and only if $\bar F_{od}+(1-\lambda_F)\psi_o\leq\Omega_{iod}<
+\bar F_{od}+\psi_o$; when it does, it activates at once every product with
+positive net profit with $o$.
+\item \emph{Demand} ($\eta>0$ only). Incumbent consumer-good import
+relationships with $o$ grow by $\ln(1+\eta)$; new consumer-good import
+relationships may enter. Exports to $o$ and imports of intermediate and
+capital goods from $o$ are unchanged.
+\end{enumerate}
+\end{proposition}
+
+\noindent The proof, in Appendix~\ref{app:proofs}, follows from
+Lemma~\ref{lem:set} and Assumption~\ref{ass:sep}(ii). Proposition~\ref{prop:margins}
+is the core of the mechanism tests. Under a fixed-cost channel the response is
+entirely extensive, and under the country-level component it is concentrated
+among firms new to $o$ and arrives in bundles of products. Under a
+variable-cost channel incumbent flows grow in proportion. Under a demand
+channel the response is confined to imports of consumer goods.
+
+\begin{proposition}[Heterogeneity]\label{prop:hetero}
+Under Assumptions~\ref{ass:sep}--\ref{ass:info}, the proportional response of
+incumbent relationships under the variable-cost channel,
+$\varepsilon_d\lambda_\tau\iota_o$, is increasing in $\iota_o$. Under the
+fixed-cost channels, the set of relationships pushed above the activation
+threshold widens with $\psi_{ok}$ and $\psi_o$. Under the demand channel,
+responses are unrelated to $\iota$ and $\psi$.
+\end{proposition}
+
+\noindent A wider window does not guarantee more entry: the number of
+newly active relationships also depends on how many relationships lie near
+the threshold. Where frictions are very high, firms may remain too far below
+the threshold for the owner's knowledge to make trade profitable. The extensive
+response to $\psi$ can therefore be non-monotone, and the empirical tests
+treat it as a prediction about the incumbent margin first and the extensive
+margin second.
+
+\subsection{Firm-level diversification}
+
+The model also clarifies what an owner's arrival does to the diversification
+of a firm's trade.
+
+\begin{proposition}[Diversification]\label{prop:divers}
+Under Assumption~\ref{ass:sep}:
+\begin{enumerate}[label=(\roman*),itemsep=0.1em]
+\item The number of the firm's partner countries and of its country--product
+relationships weakly increases.
+\item Let $s_{io}$ be the share of country $o$ in the firm's trade in direction
+$d$ and $H_i=\sum_c s_{ic}^2$ the Herfindahl index across partner countries. A
+marginal increase in trade with $o$, holding trade with other countries fixed,
+lowers $H_i$ if and only if $s_{io}<H_i$.
+\item If $o$ is not the United States, the firm's non-U.S.\ share of trade
+weakly increases.
+\end{enumerate}
+\end{proposition}
+
+\noindent Part (ii) is the relevant notion of diversification for a firm that
+already trades. An expansion toward a partner that is small relative to the
+firm's existing concentration diversifies the firm; an expansion that makes
+$o$ the dominant partner concentrates it. For a firm whose trade is dominated
+by the United States, $H_i$ is close to the U.S.\ share, and almost any
+expansion toward a non-U.S.\ origin diversifies. Proposition~\ref{prop:divers}
+relies on separability. If trade with $o$ comes at the expense of other
+partners, the effect on diversification depends on which partners lose---the
+subject of the next subsection.
+
+\subsection{Interdependence across countries}
+\label{sec:interdep}
+
+Separability is restrictive for manufacturers importing inputs, because adding
+a lower-cost source lowers the firm's marginal cost and raises its scale. To
+capture this, I adopt the sourcing structure of \citet{antras2017}. Firm $i$
+with productivity $\varphi_i$ sources inputs from a set of countries
+$\mathcal{J}_i$ and has sourcing capability
+\begin{equation}
+\Theta_i=\sum_{j\in\mathcal{J}_i}T_j\,(\tau_{ij}w_j)^{-\theta},
+\label{eq:Theta}
+\end{equation}
+where $T_j$ is country $j$'s state of technology, $w_j$ its input cost, and
+$\theta$ the dispersion of input efficiency across countries. Its unit cost is
+proportional to $\varphi_i^{-1}\Theta_i^{-1/\theta}$, its share of input
+purchases from $j$ is $T_j(\tau_{ij}w_j)^{-\theta}/\Theta_i$, and its total
+input purchases are proportional to $\Theta_i^{(\sigma-1)/\theta}$, where
+$\sigma$ is the elasticity of demand for the firm's output.
+
+\begin{proposition}[Interdependence]\label{prop:interdep}
+In the sourcing model of \eqref{eq:Theta}, holding the sourcing set fixed,
+imports from country $j$ satisfy
+$X_{ij}\propto T_j(\tau_{ij}w_j)^{-\theta}\,\Theta_i^{(\sigma-1)/\theta-1}$.
+An owner who lowers $\ln\tau_{io}$ by $\lambda_\tau\iota_o$:
+\begin{enumerate}[label=(\alph*),itemsep=0.1em]
+\item raises imports from every $j\neq o$ in the same proportion if
+$(\sigma-1)/\theta>1$ and lowers them in the same proportion if
+$(\sigma-1)/\theta<1$;
+\item changes imports from $o$ relative to any $j\neq o$ by exactly
+$\theta\lambda_\tau\iota_o$ in logs.
+\end{enumerate}
+When $(\sigma-1)/\theta>1$, sourcing decisions are complements and the set of
+source countries weakly expands \citep{antras2017}.
+\end{proposition}
+
+\noindent Proposition~\ref{prop:interdep} has two implications for the
+empirical design. First, the effect on third countries is common to all of
+the firm's other partners. A within-firm comparison with firm-by-year fixed
+effects absorbs it and identifies the country-specific effect in part (b)
+without requiring separability. Second, because the third-country effect is
+absorbed, measuring it---and hence distinguishing trade creation from trade
+diversion---requires a comparison across firms. Whether the owner's
+arrival diversifies the firm then depends on whether third-country trade
+rises (complements) or falls (substitutes), and on which partners lose.
+For exporters, interdependence may arise through capacity constraints, which
+make destinations substitutes; the same logic applies.
+
+\subsection{Dynamics and persistence}
+
+Two extensions sharpen the timing predictions. First, if fixed costs are
+sunk---paid once on entry, with lower costs of maintaining a relationship
+\citep{das2007}---and finding a partner takes time, the fixed-cost channel
+builds over several years after the transition, while a variable-cost
+reduction acts immediately. Second, under sunk costs, relationships formed
+under an immigrant owner persist after she leaves, while the gains from a
+lower variable cost leave with her. With roughly 1,000 transitions, reversals
+are too rare to support a main-text test, and the persistence prediction is
+treated as exploratory.
+
+\subsection{Selection into ownership}
+\label{sec:selection}
+
+Ownership is not randomly assigned. A buyer from $o$ values firm $i$ at its
+baseline value $V_i$ plus the gain from her knowledge,
+\begin{equation}
+G_i(o)=\sum_{t\geq t^*}\beta^{t-t^*}\big[\Pi_{it}(D_{io}=1)-\Pi_{it}(D_{io}=0)\big],
+\end{equation}
+which is larger for firms whose products $o$ supplies or demands strongly
+(high $\Phi_{iok}$) and where information components are large. Buyers from
+$o$ therefore select firms with high $G_i(o)$.
+
+\begin{proposition}[What selection does and does not threaten]\label{prop:selection}
+(i) Because buyers select on $G_i(o)$, the estimand is the average effect of
+immigrant ownership on the firms immigrants acquire (the ATT), not the average
+effect across all firms. (ii) Selection on the time-invariant components of
+$\Phi_{iokd}$ and of the frictions is absorbed by firm-by-country-by-product
+fixed effects. (iii) The design fails if buyers select on anticipated changes
+in $\Phi_{iokd,t}$---shocks to the firm's opportunities with $o$ that would have
+occurred without the change in ownership.
+\end{proposition}
+
+\noindent Part (iii) is the identifying assumption stated in economic terms.
+It is violated if, for example, a buyer acquires a firm because a contract
+with a customer in $o$ is already in prospect. It is not violated if a buyer
+acquires a firm because its products are ones $o$ supplies cheaply, which is
+selection on the level of the gain. A related form of selection is through
+networks: a firm already trading with $o$ is more likely to come to the
+attention of buyers from $o$. This affects which firms are treated, and so the
+interpretation of heterogeneity by pre-transition trading status, but not
+the validity of the main comparison.
+
+\subsection{Summary of predictions}
+
+Table~\ref{tab:predictions} summarizes the predictions of each channel and the
+test that corresponds to each.
+
+\begin{table}[htbp]\centering\footnotesize
+\caption{Predictions by channel}
+\label{tab:predictions}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.3cm}YYYY}
+\toprule
+Prediction & Country fixed cost ($\lambda_F$) & Product fixed cost ($\lambda_f$) & Variable cost ($\lambda_\tau$) & Demand ($\eta$)\\
+\midrule
+P1. Trade with $o$ relative to other countries & Rises & Rises & Rises & Rises (consumer imports only)\\
+P2. Incumbent $(o,k)$ flows & Unchanged & Unchanged & Rise by $\varepsilon\lambda_\tau\iota_o$ & Consumer imports rise\\
+P3. New $(o,k)$ pairs & Firms new to $o$ only & Yes & At threshold only & Consumer imports only\\
+P4. Firms already trading with $o$ & No effect & Effect & Effect & Effect\\
+P5. Breadth of entry & Many products at once & One at a time & Few & Consumer goods only\\
+P6. Exports and intermediate imports & Rise & Rise & Rise & No effect\\
+P7. Gradient in information intensity & Larger where $\psi$ large & Larger where $\psi$ large & Larger where $\iota$ large & None\\
+P8. Timing & Gradual (search) & Gradual (search) & Immediate & Immediate\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+%=====================================================================
+\section{Empirical Strategy}
+\label{sec:strategy}
+%=====================================================================
+
+\subsection{Estimand and identifying assumption}
+
+Let $X_{ickdt}(1)$ and $X_{ickdt}(0)$ denote potential trade with and without a
+transition to an owner from $o_i$. The target parameter is the proportional
+effect of the transition on trade with $o_i$ among switching firms, relative to
+the effect on the same firms' trade with other countries. Because trade
+values contain many zeros and the model is multiplicative, I state the
+identifying assumption in ratios \citep{wooldridge2023}: absent the
+transition, the ratio of a switching firm's expected trade with $o_i$ to its
+expected trade with other countries would have evolved as in comparison firms,
+conditional on the fixed effects below. In the language of
+Proposition~\ref{prop:selection}, buyers may select firms on the level of
+their opportunities with $o$ but not on anticipated changes in them.
+
+\subsection{Main specification}
+
+For each direction $d$, I estimate by Poisson pseudo-maximum likelihood
+\citep{santossilva2006}, retaining zeros,
+\begin{equation}
+X_{ickt} = \exp\big(\beta\,\Post_{it}\times\one[c=o_i] + \alpha_{it} +
+\gamma_{ckt} + \delta_{ick}\big)\,\epsilon_{ickt},
+\label{eq:main}
+\end{equation}
+where $\Post_{it}=\one[t\geq t_i^*]$ for switching firms. The coefficient
+$\beta$ is the proportional change in trade with the owner's origin caused by
+the transition, relative to other countries; $\exp(\beta)-1$ is the
+percentage effect. Each fixed effect has a counterpart in the model
+(Table~\ref{tab:fe}). PPML is consistent under the multiplicative model,
+retains the zeros that the extensive margin requires, and weights
+observations by their expected values; I report results from unweighted
+linear models in levels and participation alongside it. High-dimensional
+fixed effects are estimated following \citet{correia2020}.
+
+\begin{table}[htbp]\centering\small
+\caption{Fixed effects in equation~\eqref{eq:main} and their model counterparts}
+\label{tab:fe}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.6cm}YY}
+\toprule
+Fixed effect & Absorbs & Model counterpart\\
+\midrule
+Firm $\times$ year ($\alpha_{it}$) & Any general effect of the change in ownership: new management, finance, reorganization, firm-level demand and scale & Firm component of $\Phi$; common third-country effects under interdependence (Prop.~\ref{prop:interdep})\\
+Country $\times$ product $\times$ year ($\gamma_{ckt}$) & Supply and demand shocks in $c$, exchange rates, tariffs and trade agreements, gravity & Partner component of $\Phi$; common component of $\tau$\\
+Firm $\times$ country $\times$ product ($\delta_{ick}$) & Persistent firm--partner fit, including selection of buyers on the level of opportunities with $o$ & Time-invariant components of $\Phi$ and of frictions (Prop.~\ref{prop:selection}(ii))\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Event study}
+
+To trace the time path and assess pre-trends, I replace $\Post_{it}$ with
+indicators for event time $e=t-t_i^*$, binned at the endpoints of a window
+$e\in[-4,6]$ \verify{window chosen given 2005--2019 coverage and transition
+years}. Because transitions are staggered and effects may vary across cohorts
+and over time, two-way fixed-effects estimates can be biased
+\citep{goodmanbacon2021,dechaisemartin2020}. I therefore use a stacked
+design \citep{cengiz2019}. Each stack $s$ consists of the firms that switch in
+year $g$ to owners from origin $o$, together with clean comparison firms that
+do not change ownership within the window $[g-4,g+6]$. Within a stack,
+$D^s_{c}=\one[c=o_s]$ is defined for treated and comparison firms alike, so
+that comparison firms supply the counterfactual path of trade with $o$. The
+estimating equation is
+\begin{equation}
+X^s_{ickt} = \exp\Big(\sum_{e\neq-1}\beta_e\,\one[t-g_s=e]\,T^s_i\,D^s_c +
+\alpha^s_{it} + \gamma^s_{ckt} + \delta^s_{ick}\Big)\,\epsilon^s_{ickt},
+\label{eq:es}
+\end{equation}
+where $T_i^s$ indicates treated firms and all fixed effects are
+stack-specific. Comparison firms are drawn from the groups in
+Section~\ref{sec:data}, matched on pre-period industry, size, trading status,
+and trade with $o$. As robustness, I report the estimators of
+\citet{callaway2021}, \citet{sun2021}, and \citet{borusyak2024}. Event plots
+report pre-event coefficients, confidence intervals, and the number of
+treated firms supporting each horizon.
+
+\subsection{Margins}
+\label{sec:margins}
+
+To map the estimates into Proposition~\ref{prop:margins}, I estimate versions
+of \eqref{eq:main} and \eqref{eq:es} for each margin:
+\begin{enumerate}[label=(\roman*),itemsep=0.1em]
+\item \emph{Country entry}: $\one[X_{ict}>0]$ at the firm--country--year level,
+in a linear probability model with firm-by-year, country-by-industry-by-year,
+and firm-by-country fixed effects.
+\item \emph{Product breadth}: the number of products traded with $c$, by
+PPML.
+\item \emph{New pairs}: trade in country--product pairs not active in the
+pre-period.
+\item \emph{Incumbent flows}: trade in pairs active in $t^*-1$, retaining zeros
+after the transition. Conditioning on pairs that remain active afterwards
+would select on an outcome of treatment and is avoided.
+\end{enumerate}
+The average value per active product is reported descriptively, since
+changes in product composition move it even when no incumbent flow changes.
+
+\subsection{Firm-level diversification and third countries}
+
+The within-firm comparison absorbs any effect common to the firm's other
+partners. Outcomes defined at the firm level---the number of partners, the
+Herfindahl index, the non-U.S.\ share, total trade, and trade with countries
+other than $o$---require a comparison across firms:
+\begin{equation}
+Y_{it} = \exp\big(\beta^{F}\,\Post_{it}\,T_i + \alpha_i + \kappa_{s(i)t}\big)\,u_{it},
+\label{eq:firm}
+\end{equation}
+estimated in the stacked design, with firm fixed effects $\alpha_i$ and
+industry-by-year fixed effects $\kappa_{s(i)t}$ (linear models for the
+Herfindahl index and shares). Because this comparison does not difference out
+firm-level shocks, it rests on a stronger assumption than \eqref{eq:main}. The
+most informative comparison groups are firms sold to non-immigrant owners and
+firms sold to immigrants from other origins, which share the disruption of a
+sale. I interpret $\beta^{F}$ for third countries in light of
+Proposition~\ref{prop:interdep}.
+
+\subsection{Inference and power}
+
+Standard errors are clustered by firm, the level at which treatment is
+assigned \citep{abadie2023}. Because incoming owners are concentrated in a
+limited number of origin countries, clustering by origin is unreliable. I
+therefore complement firm-clustered inference with randomization inference
+\citep{young2019}: reassigning each switching firm a placebo origin drawn from
+countries with similar pre-period trade characteristics, but distant from the
+true origin in language and region to avoid capturing spillovers, and
+re-estimating \eqref{eq:main}. \planned{Minimum detectable effects for the
+main coefficient and for each margin, computed from pre-period variance and
+the number of switching firms trading in each direction, to be reported here.}
+
+With roughly 1,000 transitions, the analysis distinguishes a small set of
+pre-specified core tests---the main effect and event study by direction, the
+four margins, pre-transition trading status, consumer versus intermediate
+goods, and firm-level diversification---from exploratory analyses of finer
+heterogeneity, spillovers to nearby countries, and reversals.
+
+\subsection{Threats to validity}
+
+Table~\ref{tab:threats} lists the main threats and the responses to each.
+
+\begin{table}[htbp]\centering\footnotesize
+\caption{Threats to validity}
+\label{tab:threats}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.2cm}YY}
+\toprule
+Threat & Why it matters & Response\\
+\midrule
+Selection on anticipated trade with $o$ & A buyer foresees growth in trade with $o$, e.g.\ a contract in prospect & Event-study leads; exclude transitions where trade with $o$ rises in $t^*-1$; compare with buyers from other origins; seller-initiated sales\\
+Shocks to Canada--$o$ trade in the firm's products & A trade agreement or tariff change raises trade with $o$ at the same time & Country $\times$ product $\times$ year fixed effects\\
+General effects of a sale & New owners reorganize, invest, or change suppliers & Firm $\times$ year fixed effects; transfers between non-immigrant owners as placebo\\
+Network-driven matching & Firms already trading with $o$ attract buyers from $o$ & Firm $\times$ country $\times$ product fixed effects; separate results by pre-period trading status\\
+Mismeasured owner identity & Early-cohort immigrants coded as non-immigrants; mixed-origin ownership & Restrict by seller age; robustness to ownership definitions and shares\\
+Mechanical changes in reporting & Mergers or identifier changes alter reported trade & Require identifier continuity; exclude mergers and consolidations\\
+Zeros and large traders & Log specifications drop zeros; a few firms dominate value & PPML; participation outcomes; results by firm size; unweighted linear models\\
+Staggered timing & Two-way fixed effects biased under heterogeneous effects & Stacked design; robust estimators\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+Two placebo exercises complement the event study. First, I assign each
+switching firm a placebo origin with similar pre-period trade characteristics
+but no linguistic or regional proximity to the true origin; the effect should
+be zero. Second, I estimate \eqref{eq:main} for firms sold to non-immigrant
+owners, assigning each the origin of an immigrant buyer in the same industry
+and year; the effect should again be zero.
+
+%=====================================================================
+\section{Results}
+\label{sec:results}
+%=====================================================================
+
+\planned{This section is outlined. Each subsection lists the planned exhibit,
+what it tests, and how alternative findings would be read.}
+
+\subsection{The cross-sectional origin gradient}
+
+\planned{Replicate the origin gradient of \citet{fungliu2025} for imports and
+exports, among all firms and among the firms that later change hands. Split
+the gradient into country participation, product breadth, and value per
+relationship. This establishes the benchmark the causal estimates are compared
+with: the share of the cross-sectional gradient reproduced by the
+within-firm effect of a change in owner is a measure of how much of the
+gradient is portable.}
+
+\subsection{Trade with the owner's country of origin}
+
+\figshell{Event study: trade with the incoming owner's country of origin}{%
+Two panels (imports; exports). Coefficients $\beta_e$ from
+equation~\eqref{eq:es}, $e\in[-4,6]$, with 95\% confidence intervals and the
+number of treated firms at each horizon. Flat pre-event coefficients support
+the identifying assumption; a gradual post-event rise is consistent with the
+fixed-cost (search) channel, an immediate jump with the variable-cost or demand
+channel.}
+
+\begin{table}[htbp]\centering\small
+\caption{Effect of a transition to immigrant ownership on trade with the owner's origin (shell)}
+\label{tab:main}
+\begin{tabular}{lcccc}
+\toprule
+ & \multicolumn{2}{c}{Imports} & \multicolumn{2}{c}{Exports}\\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+ & (1) & (2) & (3) & (4)\\
+\midrule
+$\Post\times\one[c=o]$ & -- & -- & -- & -- \\
+ & (--) & (--) & (--) & (--) \\
+\midrule
+Firm $\times$ year FE & Yes & Yes & Yes & Yes \\
+Country $\times$ product $\times$ year FE & Yes & Yes & Yes & Yes \\
+Firm $\times$ country $\times$ product FE & Yes & Yes & Yes & Yes \\
+Comparison group & All & Sold firms & All & Sold firms \\
+Randomization-inference $p$-value & -- & -- & -- & -- \\
+Switching firms & -- & -- & -- & -- \\
+Observations & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\result{Main estimates by direction and comparison group.}
+
+\subsection{Margins of adjustment}
+
+\planned{Table with columns for country entry, product breadth, new pairs, and
+incumbent flows, separately by direction. Reading: a response concentrated in
+country entry and new pairs with flat incumbent flows supports the fixed-cost
+channels (Table~\ref{tab:predictions}, P2--P3); proportional growth of
+incumbent flows supports the variable-cost channel; both may operate.}
+
+\subsection{Firm-level diversification}
+
+\planned{Estimates of equation~\eqref{eq:firm} for the number of partner
+countries, the number of country--product relationships, the Herfindahl index,
+and the non-U.S.\ share, by direction. Test of
+Proposition~\ref{prop:divers}(ii): split by whether the origin's pre-period
+share is below the firm's Herfindahl index.}
+
+\subsection{Creation or diversion}
+
+\planned{Effects on trade with countries other than $o$ and on total trade,
+across firms. Reading via Proposition~\ref{prop:interdep}: a rise in
+third-country imports indicates complementarity in sourcing; a fall indicates
+substitution and diversion. Report effects on trade with the United States
+separately, since they matter most for national diversification.}
+
+\subsection{Robustness}
+
+\planned{Alternative ownership definitions (majority versus largest owner;
+excluding mixed-origin owners; excluding older sellers); alternative event
+windows; 2001--2019 imports; robust staggered estimators; dropping the
+largest traders; linear models in levels; excluding transitions with
+anticipatory trade with $o$; placebo origins; transfers between non-immigrant
+owners.}
+
+%=====================================================================
+\section{Mechanisms}
+\label{sec:mechanisms}
+%=====================================================================
+
+\planned{Each test interacts the treatment term with one dimension implied by
+the model. The aim is to rule channels in or out, not to accumulate
+heterogeneity results. Tests (1)--(4) are pre-specified; (5)--(8) are
+exploratory given the sample size.}
+
+\begin{table}[htbp]\centering\footnotesize
+\caption{Mechanism tests and what each channel predicts}
+\label{tab:mechtests}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.4cm}>{\raggedright\arraybackslash}p{3.2cm}YYY}
+\toprule
+Test & Specification & Supports fixed cost if\ldots & Supports variable cost if\ldots & Supports demand if\ldots\\
+\midrule
+(1) Margins & Extensive vs.\ incumbent outcomes & Effect in new pairs; incumbents flat & Incumbent flows grow & Incumbent consumer imports grow\\
+(2) Pre-transition status & Treatment $\times$ firm traded with $o$ before & Effect mainly among firms new to $o$ & Similar in both groups & Similar in both groups\\
+(3) Direction & Imports vs.\ exports & Both directions & Both directions & Imports only\\
+(4) Goods type & BEC consumer vs.\ intermediate & Both types & Both types & Consumer goods only\\
+(5) Breadth & Number of products entering with $o$ & Many at once (country cost) & Few & Consumer goods only\\
+(6) Information intensity & Treatment $\times$ Rauch differentiated; country friction index & Larger where frictions high & Larger where frictions high & No pattern\\
+(7) Timing & Event-time profile & Gradual & Immediate & Immediate\\
+(8) Spillovers & Treatment for countries near $o$ in language or region & Smaller positive effects & Smaller positive effects & None\\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\paragraph{Owner involvement.} \planned{If ownership shares or the owner's
+employment earnings from the firm are observed, test whether effects are
+concentrated among owners with controlling stakes or active roles. The
+knowledge channel predicts larger effects when the owner can act on her
+knowledge; passive ownership should not move trade. \verify{Availability of
+ownership shares and owner earnings.}}
+
+\paragraph{Co-national hiring.} \planned{An incoming owner may hire employees
+from her origin country who carry the relevant knowledge. If employees'
+immigrant status and origin can be linked, test whether the effect survives
+excluding firms that hire co-national workers after the transition, or treat
+hiring as a mediator. \verify{Availability of linked employee records.}}
+
+\paragraph{Owner preferences.} \planned{A preference for home-country suppliers
+based on trust rather than cost would raise trade with $o$ without lowering
+measured frictions and would not be confined to consumer goods. It predicts
+reallocation from other sources toward $o$ within products the firm already
+imports, without a gradient in information intensity. Discuss how far the
+tests above can separate it from the cost channels.}
+
+%=====================================================================
+\section{Discussion}
+\label{sec:discussion}
+%=====================================================================
+
+\planned{This section is outlined.}
+
+\paragraph{Interpreting the channel.} \planned{If the fixed-cost channel
+dominates, immigrant owners diversify the firms they acquire by opening new
+relationships, and the effect should persist once relationships are formed.
+If the variable-cost channel dominates, owners deepen existing relationships
+and the advantage is tied to their continued involvement. If the demand
+channel dominates, the effect reflects the composition of the firm's
+customers rather than lower trade costs, and has different welfare and
+policy implications.}
+
+\paragraph{Portability.} \planned{Compare the within-firm effect with the
+cross-sectional gradient among comparable incumbent firms. The ratio is a
+benchmark for how much of the immigrant--origin trade link reflects knowledge
+that moves with the person, the assumption underlying quantitative
+evaluations such as \citet{chikissaygin2026}. The comparison is between an
+effect on acquired firms several years after a transition and a long-run
+gradient, so it is a benchmark rather than an exact decomposition.}
+
+\paragraph{From firms to the nation.} \planned{A back-of-the-envelope
+aggregation: multiply the estimated effects by pre-period trade of switching
+firms to obtain the contribution of ownership transitions to Canada's trade
+with origin countries and to its non-U.S.\ share, and compare with the
+observed change over the period. Discuss how third-country effects
+(creation versus diversion, in particular from the United States) change
+the national calculation.}
+
+\paragraph{External validity.} \planned{The estimates apply to incumbent firms
+acquired by immigrants, which are selected on the gains from immigrant
+ownership (Proposition~\ref{prop:selection}). They should not be extrapolated
+mechanically to immigrant-founded firms, to firms acquired at random, or to
+changes in immigration policy.}
+
+\paragraph{Policy.} \planned{Business succession, as owners retire, determines
+who controls a large share of Canadian firms over the coming decade;
+immigration programs that admit entrepreneurs, some of which allow the purchase
+of existing businesses \verify{program details}, influence who the buyers are.
+Discuss what the estimates imply for these programs and for trade
+diversification strategies, while noting that higher trade with an origin
+country is not by itself evidence of higher productivity or welfare.}
+
+\paragraph{Limitations.} \planned{Merchandise trade only (no services); values
+without prices, so price-based tests of supplier search are not available;
+measurement of owner origin; limited power for fine heterogeneity and
+reversals.}
+
+%=====================================================================
+\section{Conclusion}
+\label{sec:conclusion}
+%=====================================================================
+
+\planned{To be written. Thoughts for the conclusion: (i) restate the question
+as whether the person who owns a firm changes where it trades, and why that
+matters for national diversification that is ultimately decided by firms;
+(ii) summarize the headline effect, the margin, and the channel; (iii) state
+the portability result relative to the cross-sectional literature; (iv) note
+open questions---the long-run persistence of relationships formed under
+immigrant owners, effects on firm performance (sales, employment, survival)
+and on the productivity of sourcing, and the services trade that customs
+records do not capture.}
+
+%=====================================================================
+\appendix
+\section{Proofs}
+\label{app:proofs}
+%=====================================================================
+
+\paragraph{Proof of Proposition~\ref{prop:bilateral}.} Under
+Assumption~\ref{ass:sep}(i), $D_{io}$ enters only the terms of \eqref{eq:Pi}
+involving $c=o$, through \eqref{eq:tau}--\eqref{eq:demand}. The optimal
+choices for $c\neq o$ are unchanged by Lemma~\ref{lem:set}, so
+$X_{ickd}$ is unchanged for $c\neq o$. For $c=o$, each channel weakly raises
+$\Phi_{iokd}\tau_{iod}^{-\varepsilon_d}$ or weakly lowers $f_{iokd}$ or
+$F_{iod}$, which weakly enlarges the active set and weakly raises the value of
+every active relationship. \qed
+
+\paragraph{Proof of Proposition~\ref{prop:margins}.} (a) With
+$\lambda_f=\lambda_F=\eta=0$, \eqref{eq:tau} implies
+$\Delta\ln\tau_{iod}^{-\varepsilon_d}=\varepsilon_d\lambda_\tau\iota_o$; by
+Assumption~\ref{ass:sep}(ii), every relationship active before and after grows
+by this amount. The threshold condition in Lemma~\ref{lem:set} is relaxed by
+the same factor, so a relationship enters if and only if
+$\Phi\tau^{-\varepsilon}\geq f$ after the change but not before.
+(b) With only $\lambda_f>0$, $\Phi_{iokd}\tau_{iod}^{-\varepsilon_d}$ is
+unchanged, so incumbent values are unchanged; a pair becomes active exactly
+when its variable profit lies in the stated interval. (c) With only
+$\lambda_F>0$, the product-level conditions are unchanged. If the firm was
+already active with $o$, $\Omega_{iod}\geq F_{iod}$ held before and continues
+to hold, and no choice changes. If it was not, it becomes active exactly when
+$\Omega_{iod}$ lies in the stated interval, and it then activates every $k$
+with $\Phi\tau^{-\varepsilon}\geq f$, by Lemma~\ref{lem:set}. (d) Follows from
+\eqref{eq:demand}, Assumption~\ref{ass:demand}, and Assumption~\ref{ass:sep}(ii).
+\qed
+
+\paragraph{Proof of Proposition~\ref{prop:divers}.} (i) follows from
+Proposition~\ref{prop:bilateral}. For (ii), let $X=\sum_c X_c$ and
+$H=\sum_c X_c^2/X^2$. Raising $X_o$ with $X_c$ fixed for $c\neq o$,
+\[
+\frac{\partial H}{\partial X_o}=\frac{2X_oX^2-2X\sum_cX_c^2}{X^4}
+=\frac{2}{X}\,\big(s_o-H\big),
+\]
+which is negative if and only if $s_o<H$. (iii) follows because trade with the
+United States is unchanged while total trade weakly rises. \qed
+
+\paragraph{Proof of Proposition~\ref{prop:interdep}.} In the model of
+\citet{antras2017}, the firm's input purchases from $j$ equal its share
+$T_j(\tau_{ij}w_j)^{-\theta}/\Theta_i$ times total input spending, which is
+proportional to $\Theta_i^{(\sigma-1)/\theta}$. Hence $X_{ij}\propto
+T_j(\tau_{ij}w_j)^{-\theta}\Theta_i^{(\sigma-1)/\theta-1}$. A fall in
+$\ln\tau_{io}$ raises $\Theta_i$ and leaves $T_j(\tau_{ij}w_j)^{-\theta}$
+unchanged for $j\neq o$, so $X_{ij}$ moves in the direction of
+$(\sigma-1)/\theta-1$, in the same proportion for every $j\neq o$, proving (a).
+For (b), $\ln X_{io}-\ln X_{ij}=\ln[T_o(\tau_{io}w_o)^{-\theta}]-
+\ln[T_j(\tau_{ij}w_j)^{-\theta}]$, which changes by $\theta\lambda_\tau\iota_o$.
+The extensive-margin statement is Theorem~1 of \citet{antras2017}
+\verify{theorem number}. \qed
+
+\section{Data Construction}
+\label{app:data}
+
+\planned{To be written: (i) TIC and TEC coverage, thresholds, and treatment of
+re-exports; (ii) HS concordance across revisions and HS8-to-HS6 aggregation for
+exports; (iii) construction of owner origin and immigrant status, and the
+handling of multiple owners; (iv) identification of mergers and identifier
+changes; (v) construction of the set of potential relationships; (vi) sample
+restrictions and their cumulative effect on firm counts and trade coverage;
+(vii) disclosure rules.}
+
+%=====================================================================
+\begin{thebibliography}{99}
+\setlength{\itemsep}{0.15em}
+\small
+
+\bibitem[Abadie et~al.(2023)Abadie, Athey, Imbens, and Wooldridge]{abadie2023}
+Abadie, A., S. Athey, G. W. Imbens, and J. M. Wooldridge (2023). ``When Should You Adjust Standard Errors for Clustering?'' \textit{Quarterly Journal of Economics} 138(1), 1--35.
+
+\bibitem[Albornoz et~al.(2012)Albornoz, Calvo Pardo, Corcos, and Ornelas]{albornoz2012}
+Albornoz, F., H. F. Calvo Pardo, G. Corcos, and E. Ornelas (2012). ``Sequential Exporting.'' \textit{Journal of International Economics} 88(1), 17--31.
+
+\bibitem[Allen(2014)]{allen2014}
+Allen, T. (2014). ``Information Frictions in Trade.'' \textit{Econometrica} 82(6), 2041--2083.
+
+\bibitem[Andrews et~al.(2017)Andrews, Schank, and Upward]{andrews2017}
+Andrews, M., T. Schank, and R. Upward (2017). ``Do Foreign Workers Reduce Trade Barriers? Microeconomic Evidence.'' \textit{The World Economy} 40(9), 1750--1774.
+
+\bibitem[Antr\`as et~al.(2017)Antr\`as, Fort, and Tintelnot]{antras2017}
+Antr\`as, P., T. C. Fort, and F. Tintelnot (2017). ``The Margins of Global Sourcing: Theory and Evidence from US Firms.'' \textit{American Economic Review} 107(9), 2514--2564.
+
+\bibitem[Ariu(2022)]{ariu2022}
+Ariu, A. (2022). ``Foreign Workers, Product Quality, and Trade: Evidence from a Natural Experiment.'' \textit{Journal of International Economics} 139, 103686.
+
+\bibitem[Becker and Hvide(2022)]{becker2022}
+Becker, S. O., and H. K. Hvide (2022). ``Entrepreneur Death and Startup Performance.'' \textit{Review of Finance} 26(1), 163--185.
+
+\bibitem[Bennedsen et~al.(2007)Bennedsen, Nielsen, P\'erez-Gonz\'alez, and Wolfenzon]{bennedsen2007}
+Bennedsen, M., K. M. Nielsen, F. P\'erez-Gonz\'alez, and D. Wolfenzon (2007). ``Inside the Family Firm: The Role of Families in Succession Decisions and Performance.'' \textit{Quarterly Journal of Economics} 122(2), 647--691.
+
+\bibitem[Bernard et~al.(2007)Bernard, Jensen, Redding, and Schott]{bernard2007}
+Bernard, A. B., J. B. Jensen, S. J. Redding, and P. K. Schott (2007). ``Firms in International Trade.'' \textit{Journal of Economic Perspectives} 21(3), 105--130.
+
+\bibitem[Bernard et~al.(2011)Bernard, Redding, and Schott]{bernard2011}
+Bernard, A. B., S. J. Redding, and P. K. Schott (2011). ``Multiproduct Firms and Trade Liberalization.'' \textit{Quarterly Journal of Economics} 126(3), 1271--1318.
+
+\bibitem[Bertrand and Schoar(2003)]{bertrandschoar2003}
+Bertrand, M., and A. Schoar (2003). ``Managing with Style: The Effect of Managers on Firm Policies.'' \textit{Quarterly Journal of Economics} 118(4), 1169--1208.
+
+\bibitem[Bisztray et~al.(2018)Bisztray, Koren, and Szeidl]{bisztray2018}
+Bisztray, M., M. Koren, and A. Szeidl (2018). ``Learning to Import from Your Peers.'' \textit{Journal of International Economics} 115, 242--258.
+
+\bibitem[Bonadio(2026)]{bonadio2026}
+Bonadio, B. (2026). ``Migrants, Trade, and Market Access.'' \textit{Review of Economics and Statistics} 108(2), 436--451.
+
+\bibitem[Borusyak et~al.(2024)Borusyak, Jaravel, and Spiess]{borusyak2024}
+Borusyak, K., X. Jaravel, and J. Spiess (2024). ``Revisiting Event-Study Designs: Robust and Efficient Estimation.'' \textit{Review of Economic Studies} 91(6), 3253--3285.
+
+\bibitem[Callaway and Sant'Anna(2021)]{callaway2021}
+Callaway, B., and P. H. C. Sant'Anna (2021). ``Difference-in-Differences with Multiple Time Periods.'' \textit{Journal of Econometrics} 225(2), 200--230.
+
+\bibitem[Cardoso and Ramanarayanan(2022)]{cardoso2022}
+Cardoso, M., and A. Ramanarayanan (2022). ``Immigrants and Exports: Firm-Level Evidence from Canada.'' \textit{Canadian Journal of Economics} 55(3), 1250--1293.
+
+\bibitem[Caselli et~al.(2020)Caselli, Koren, Lisicky, and Tenreyro]{caselli2020}
+Caselli, F., M. Koren, M. Lisicky, and S. Tenreyro (2020). ``Diversification Through Trade.'' \textit{Quarterly Journal of Economics} 135(1), 449--502.
+
+\bibitem[Cengiz et~al.(2019)Cengiz, Dube, Lindner, and Zipperer]{cengiz2019}
+Cengiz, D., A. Dube, A. Lindner, and B. Zipperer (2019). ``The Effect of Minimum Wages on Low-Wage Jobs.'' \textit{Quarterly Journal of Economics} 134(3), 1405--1454.
+
+\bibitem[Chaney(2008)]{chaney2008}
+Chaney, T. (2008). ``Distorted Gravity: The Intensive and Extensive Margins of International Trade.'' \textit{American Economic Review} 98(4), 1707--1721.
+
+\bibitem[Chaney(2014)]{chaney2014}
+Chaney, T. (2014). ``The Network Structure of International Trade.'' \textit{American Economic Review} 104(11), 3600--3634.
+
+\bibitem[Chikis and Saygin(2026)]{chikissaygin2026}
+Chikis, C. A., and B. Saygin (2026). ``Old Roots, New Routes: The Trade Patterns of Immigrant-Founded Firms.'' Working paper, University of Chicago.
+
+\bibitem[Cohen et~al.(2017)Cohen, Gurun, and Malloy]{cohen2017}
+Cohen, L., U. G. Gurun, and C. Malloy (2017). ``Resident Networks and Corporate Connections: Evidence from World War II Internment Camps.'' \textit{Journal of Finance} 72(1), 207--248.
+
+\bibitem[Combes et~al.(2005)Combes, Lafourcade, and Mayer]{combes2005}
+Combes, P.-P., M. Lafourcade, and T. Mayer (2005). ``The Trade-Creating Effects of Business and Social Networks: Evidence from France.'' \textit{Journal of International Economics} 66(1), 1--29.
+
+\bibitem[Correia et~al.(2020)Correia, Guimar\~aes, and Zylkin]{correia2020}
+Correia, S., P. Guimar\~aes, and T. Zylkin (2020). ``Fast Poisson Estimation with High-Dimensional Fixed Effects.'' \textit{Stata Journal} 20(1), 95--115.
+
+\bibitem[Das et~al.(2007)Das, Roberts, and Tybout]{das2007}
+Das, S., M. J. Roberts, and J. R. Tybout (2007). ``Market Entry Costs, Producer Heterogeneity, and Export Dynamics.'' \textit{Econometrica} 75(3), 837--873.
+
+\bibitem[de~Chaisemartin and D'Haultf{\oe}uille(2020)]{dechaisemartin2020}
+de Chaisemartin, C., and X. D'Haultf{\oe}uille (2020). ``Two-Way Fixed Effects Estimators with Heterogeneous Treatment Effects.'' \textit{American Economic Review} 110(9), 2964--2996.
+
+\bibitem[Eaton et~al.(2011)Eaton, Kortum, and Kramarz]{eaton2011}
+Eaton, J., S. Kortum, and F. Kramarz (2011). ``An Anatomy of International Trade: Evidence from French Firms.'' \textit{Econometrica} 79(5), 1453--1498.
+
+\bibitem[Egger et~al.(2019)Egger, Erhardt, and Lassmann]{egger2019}
+Egger, P. H., K. Erhardt, and A. Lassmann (2019). ``Immigration and Firms' Integration in International Production Networks.'' \textit{European Economic Review} 111, 1--34.
+
+\bibitem[Erbahar and Gen\c{c}osmano\u{g}lu(2023)]{erbahar2023}
+Erbahar, A., and \"O. T. Gen\c{c}osmano\u{g}lu (2023). ``Migrants and Imports: Evidence from Dutch Firms.'' \textit{Economica} 90(360), 1204--1228.
+
+\bibitem[Fung et~al.(2019)Fung, Grekou, and Liu]{fung2019}
+Fung, L., D. Grekou, and H. Liu (2019). ``The Impact of Immigrant Business Ownership on International Trade.'' Analytical Studies Branch Research Paper Series No.~426, Statistics Canada.
+
+\bibitem[Fung and Liu(2025)]{fungliu2025}
+Fung, L., and H. Liu (2025). ``Immigrant Business Ownership and Imports in Canada.'' \textit{Canadian Journal of Economics} 58(3), 961--989.
+
+\bibitem[Goodman-Bacon(2021)]{goodmanbacon2021}
+Goodman-Bacon, A. (2021). ``Difference-in-Differences with Variation in Treatment Timing.'' \textit{Journal of Econometrics} 225(2), 254--277.
+
+\bibitem[Gould(1994)]{gould1994}
+Gould, D. M. (1994). ``Immigrant Links to the Home Country: Empirical Implications for U.S. Bilateral Trade Flows.'' \textit{Review of Economics and Statistics} 76(2), 302--316.
+
+\bibitem[Guadalupe et~al.(2012)Guadalupe, Kuzmina, and Thomas]{guadalupe2012}
+Guadalupe, M., O. Kuzmina, and C. Thomas (2012). ``Innovation and Foreign Ownership.'' \textit{American Economic Review} 102(7), 3594--3627.
+
+\bibitem[Hatzigeorgiou and Lodefalk(2016)]{hatzigeorgiou2016}
+Hatzigeorgiou, A., and M. Lodefalk (2016). ``Migrants' Influence on Firm-Level Exports.'' \textit{Journal of Industry, Competition and Trade} 16(4), 477--497.
+
+\bibitem[Head and Ries(1998)]{headries1998}
+Head, K., and J. Ries (1998). ``Immigration and Trade Creation: Econometric Evidence from Canada.'' \textit{Canadian Journal of Economics} 31(1), 47--62.
+
+\bibitem[Hiller(2013)]{hiller2013}
+Hiller, S. (2013). ``Does Immigrant Employment Matter for Export Sales? Evidence from Denmark.'' \textit{Review of World Economics} 149(2), 369--394.
+
+\bibitem[Imbs and Wacziarg(2003)]{imbs2003}
+Imbs, J., and R. Wacziarg (2003). ``Stages of Diversification.'' \textit{American Economic Review} 93(1), 63--86.
+
+\bibitem[Kaufmann et~al.(2011)Kaufmann, Kraay, and Mastruzzi]{kaufmann2011}
+Kaufmann, D., A. Kraay, and M. Mastruzzi (2011). ``The Worldwide Governance Indicators: Methodology and Analytical Issues.'' \textit{Hague Journal on the Rule of Law} 3(2), 220--246.
+
+\bibitem[Koren and Tenreyro(2007)]{koren2007}
+Koren, M., and S. Tenreyro (2007). ``Volatility and Development.'' \textit{Quarterly Journal of Economics} 122(1), 243--287.
+
+\bibitem[Lenoir et~al.(2023)Lenoir, Martin, and Mejean]{lenoir2023}
+Lenoir, C., J. Martin, and I. Mejean (2023). ``Search Frictions in International Goods Markets.'' \textit{Journal of the European Economic Association} 21(1), 326--366.
+
+\bibitem[Melitz(2003)]{melitz2003}
+Melitz, M. J. (2003). ``The Impact of Trade on Intra-Industry Reallocations and Aggregate Industry Productivity.'' \textit{Econometrica} 71(6), 1695--1725.
+
+\bibitem[Mion and Opromolla(2014)]{mionopromolla2014}
+Mion, G., and L. D. Opromolla (2014). ``Managers' Mobility, Trade Performance, and Wages.'' \textit{Journal of International Economics} 94(1), 85--101.
+
+\bibitem[Mitaritonna et~al.(2017)Mitaritonna, Orefice, and Peri]{mitaritonna2017}
+Mitaritonna, C., G. Orefice, and G. Peri (2017). ``Immigrants and Firms' Outcomes: Evidence from France.'' \textit{European Economic Review} 96, 62--82.
+
+\bibitem[Monarch and Schmidt-Eisenlohr(2023)]{monarch2023}
+Monarch, R., and T. Schmidt-Eisenlohr (2023). ``Longevity and the Value of Trade Relationships.'' \textit{Journal of International Economics} 145, 103842.
+
+\bibitem[Morales et~al.(2019)Morales, Sheu, and Zahler]{morales2019}
+Morales, E., G. Sheu, and A. Zahler (2019). ``Extended Gravity.'' \textit{Review of Economic Studies} 86(6), 2668--2712.
+
+\bibitem[Muendler and Rauch(2018)]{muendler2018}
+Muendler, M.-A., and J. E. Rauch (2018). ``Do Employee Spinoffs Learn Markets from Their Parents? Evidence from International Trade.'' \textit{European Economic Review} 105, 159--173.
+
+\bibitem[Ottaviano et~al.(2018)Ottaviano, Peri, and Wright]{ottaviano2018}
+Ottaviano, G. I. P., G. Peri, and G. C. Wright (2018). ``Immigration, Trade and Productivity in Services: Evidence from U.K. Firms.'' \textit{Journal of International Economics} 112, 88--108.
+
+\bibitem[Parsons and V\'ezina(2018)]{parsonsvezina2018}
+Parsons, C., and P.-L. V\'ezina (2018). ``Migrant Networks and Trade: The Vietnamese Boat People as a Natural Experiment.'' \textit{Economic Journal} 128(612), F210--F234.
+
+\bibitem[Patault and Lenoir(2024)]{patault2024}
+Patault, B., and C. Lenoir (2024). ``Customer Capital Spillovers: Evidence from Sales Managers in International Markets.'' \textit{American Economic Journal: Applied Economics} 16(4), 404--443.
+
+\bibitem[Peri and Requena-Silvente(2010)]{peri2010}
+Peri, G., and F. Requena-Silvente (2010). ``The Trade Creation Effect of Immigrants: Evidence from the Remarkable Case of Spain.'' \textit{Canadian Journal of Economics} 43(4), 1433--1459.
+
+\bibitem[Rauch(1999)]{rauch1999}
+Rauch, J. E. (1999). ``Networks versus Markets in International Trade.'' \textit{Journal of International Economics} 48(1), 7--35.
+
+\bibitem[Rauch(2001)]{rauch2001}
+Rauch, J. E. (2001). ``Business and Social Networks in International Trade.'' \textit{Journal of Economic Literature} 39(4), 1177--1203.
+
+\bibitem[Rauch and Trindade(2002)]{rauchtrindade2002}
+Rauch, J. E., and V. Trindade (2002). ``Ethnic Chinese Networks in International Trade.'' \textit{Review of Economics and Statistics} 84(1), 116--130.
+
+\bibitem[Santos Silva and Tenreyro(2006)]{santossilva2006}
+Santos Silva, J. M. C., and S. Tenreyro (2006). ``The Log of Gravity.'' \textit{Review of Economics and Statistics} 88(4), 641--658.
+
+\bibitem[Startz(2025)]{startz2025}
+Startz, M. (2025). ``The Value of Face-to-Face: Search and Contracting Problems in Nigerian Trade.'' Working paper.
+
+\bibitem[Steingress(2018)]{steingress2018}
+Steingress, W. (2018). ``The Causal Impact of Migration on US Trade: Evidence from Political Refugees.'' \textit{Canadian Journal of Economics} 51(4), 1312--1338.
+
+\bibitem[Steinwender(2018)]{steinwender2018}
+Steinwender, C. (2018). ``Real Effects of Information Frictions: When the States and the Kingdom Became United.'' \textit{American Economic Review} 108(3), 657--696.
+
+\bibitem[Sun and Abraham(2021)]{sun2021}
+Sun, L., and S. Abraham (2021). ``Estimating Dynamic Treatment Effects in Event Studies with Heterogeneous Treatment Effects.'' \textit{Journal of Econometrics} 225(2), 175--199.
+
+\bibitem[Wagner et~al.(2002)Wagner, Head, and Ries]{wagner2002}
+Wagner, D., K. Head, and J. Ries (2002). ``Immigration and the Trade of Provinces.'' \textit{Scottish Journal of Political Economy} 49(5), 507--525.
+
+\bibitem[Wooldridge(2023)]{wooldridge2023}
+Wooldridge, J. M. (2023). ``Simple Approaches to Nonlinear Difference-in-Differences with Panel Data.'' \textit{Econometrics Journal} 26(3), C31--C66.
+
+\bibitem[Young(2019)]{young2019}
+Young, A. (2019). ``Channeling Fisher: Randomization Tests and the Statistical Insignificance of Seemingly Significant Experimental Results.'' \textit{Quarterly Journal of Economics} 134(2), 557--598.
+
+\end{thebibliography}
+
+\end{document}
